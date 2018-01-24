@@ -1,21 +1,27 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "lineauditdb";
-
-try {
-    	$connection = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password
-    	);
-
-    	$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+class Database {
+    
+    //Setting configuration variables
+    private $servername = "localhost";
+    private $username = "root";
+    private $password = "";
+    private $dbname = "lineauditdb";
+    public $conn;
+    
+    public function getConnection(){
+        
+        $this->conn = null;
+        
+        try{
+            $this->conn = new PDO("mysql:host=$this->servername;dbname=$this->dbname", $this->username, $this->password);
+            $this->conn->exec("set names utf8");
+        }catch(PDOException $exception){
+                echo "Connection error: " . $exception->getMessage();
+        }
+        
+        return $this->conn;
     }
-catch(PDOException $e)
-
-    {
-    	die("Lamento, algo não está funcionando 100% (DB) ");
-    }
+}
 
 ?>
