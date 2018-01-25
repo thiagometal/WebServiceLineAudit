@@ -24,6 +24,15 @@ class ItemChecklist{
         return $stmt;
     }
     
+    function getListItemByLine($line) {
+        $query = "SELECT * FROM " . $this->table_name . "WHERE line='" . $line . "'";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        
+        return $stmt;
+    }
+    
     function post() {
         $query = "INSERT INTO " . $this->table_name . 
             " SET section=:section, item=:item, detail=:detail, specification=:specification, line=:line, weight=:weight";
