@@ -5,14 +5,14 @@ header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
 include_once 'config.inc.php';
-include_once 'itemChecklist.php';
+include_once 'checklist.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
-$itemChecklist = new ItemChecklist($db);
+$checklist = new Checklist($db);
 
-$stmt = $itemChecklist->getList();
+$stmt = $checklist->getList();
 $num = $stmt->rowCount();
 
 if ($num>0) {

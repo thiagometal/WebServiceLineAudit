@@ -15,7 +15,7 @@ $itemChecklist = new ItemChecklist($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-$itemChecklist->id = $data->id;
+$itemChecklist->id = isset($_GET['id']) ? $_GET['id'] : die();
 
 $itemChecklist->section = $_POST["section"];
 $itemChecklist->item = $_POST["item"];
@@ -23,8 +23,8 @@ $itemChecklist->detail = $_POST["detail"];
 $itemChecklist->specification = $_POST["specification"];
 $itemChecklist->line = $_POST["line"];
 $itemChecklist->weight = $_POST["weight"];
-
-if ($itemChecklist->update()) {
+var_dump($_POST["weight"]);
+if ($itemChecklist->update($itemChecklist)) {
     echo '{';
         echo '"message": "Checklist Item was updated."';
     echo '}';

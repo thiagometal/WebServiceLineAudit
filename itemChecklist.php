@@ -11,12 +11,12 @@ class ItemChecklist{
     public $line;
     public $weight;
     
-    public function __construct($db){
+    public function __construct($db) {
         $this->conn = $db;
     }
     
     function getList() {
-        $query = "SELECT * FROM " . $this->table_name;
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY id DESC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -25,7 +25,16 @@ class ItemChecklist{
     }
     
     function getListItemByLine($line) {
-        $query = "SELECT * FROM " . $this->table_name . "WHERE line='" . $line . "'";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE line='" . $line . "'";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        
+        return $stmt;
+    }
+    
+    function getItemById($id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE id =" . $id;
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -60,21 +69,21 @@ class ItemChecklist{
         return false;
     }
     
-    function update() {
+    function update($itemChecklist) {
         $query = "UPDATE " . $this->table_name . 
             " SET section=:section, item=:item, detail=:detail, specification=:specification, line=:line, weight=:weight 
                 WHERE id =:id";
-            
+        
         $stmt = $this->conn->prepare($query);
         
-        $this->section = htmlspecialchars(strip_tags($this->section));
+        $this->section = htmlspecialchars(strip_tags($itemChecklist->section));
         $this->item = htmlspecialchars(strip_tags($this->item));
         $this->detail = htmlspecialchars(strip_tags($this->detail));
         $this->specification = htmlspecialchars(strip_tags($this->specification));
         $this->line = htmlspecialchars(strip_tags($this->line));
         $this->weight = htmlspecialchars(strip_tags($this->weight));
         $this->id = htmlspecialchars(strip_tags($this->id));
-        
+        var_dump($this->section);
         $stmt->bindParam(":section", $this->section, PDO::PARAM_STR);
         $stmt->bindParam(":item", $this->item, PDO::PARAM_STR);
         $stmt->bindParam(":detail", $this->detail, PDO::PARAM_STR);
